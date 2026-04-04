@@ -8,22 +8,22 @@ export default function SpeakerToggle() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Toggle pill */}
-      <div className="flex justify-center mb-10">
-        <div className="inline-flex bg-white rounded-full p-1 shadow-md border border-gray-100">
+      {/* Toggle pill moderno */}
+      <div className="flex justify-center mb-12">
+        <div className="inline-flex bg-white/5 rounded-2xl p-1 border border-white/10">
           {Object.values(speakers).map((s) => (
             <button
               key={s.id}
               onClick={() => setActive(s.id)}
-              className={`relative px-6 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                active === s.id ? 'text-white' : 'text-gray-500 hover:text-cchia-blue'
+              className={`relative px-6 py-2.5 rounded-xl text-sm font-bold transition-colors duration-200 ${
+                active === s.id ? 'text-white' : 'text-white/40 hover:text-white/70'
               }`}
             >
               {active === s.id && (
                 <motion.span
-                  layoutId="pill"
-                  className="absolute inset-0 rounded-full bg-cchia-blue"
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  layoutId="speaker-pill"
+                  className="absolute inset-0 rounded-xl bg-cchia-teal"
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                 />
               )}
               <span className="relative z-10">{s.name}</span>
@@ -32,29 +32,35 @@ export default function SpeakerToggle() {
         </div>
       </div>
 
-      {/* Content */}
+      {/* Quote + contenido */}
       <AnimatePresence mode="wait">
         <motion.div
           key={active}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
+          exit={{ opacity: 0, y: -16 }}
           transition={{ duration: 0.35 }}
           className="text-center"
         >
-          <blockquote className="text-2xl md:text-3xl font-light text-cchia-blue leading-relaxed mb-8 italic">
-            "{speaker.quote}"
+          {/* Comilla decorativa */}
+          <span className="text-cchia-teal/20 text-8xl font-black leading-none block mb-2">"</span>
+
+          <blockquote className="text-xl md:text-2xl font-light text-white leading-relaxed mb-8 -mt-6">
+            {speaker.quote}
           </blockquote>
-          <p className="text-gray-600 text-base leading-relaxed max-w-2xl mx-auto mb-6">
+
+          <p className="text-white/40 text-sm leading-relaxed max-w-xl mx-auto mb-8 font-light">
             {speaker.extended}
           </p>
-          <div className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-cchia-teal flex items-center justify-center text-white font-bold text-sm">
+
+          {/* Avatar */}
+          <div className="inline-flex items-center gap-3 glass rounded-2xl px-5 py-3">
+            <div className="w-9 h-9 rounded-xl bg-cchia-teal flex items-center justify-center text-white font-black text-sm flex-shrink-0">
               {speaker.name.charAt(0)}
             </div>
             <div className="text-left">
-              <p className="font-bold text-cchia-blue text-sm">{speaker.name}</p>
-              <p className="text-gray-500 text-xs">{speaker.role}</p>
+              <p className="font-black text-white text-sm">{speaker.name}</p>
+              <p className="text-white/40 text-xs">{speaker.role}</p>
             </div>
           </div>
         </motion.div>
