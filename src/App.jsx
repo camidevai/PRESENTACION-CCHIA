@@ -1,34 +1,90 @@
-import Header from './components/Header'
-import Hero from './components/Hero'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import SpeakerSelect from './components/SpeakerSelect'
+import Sidebar from './components/Sidebar'
+import MiHistoria from './components/MiHistoria'
+import LaCCHIA from './components/LaCCHIA'
 import Definicion from './components/Definicion'
 import Vision from './components/Vision'
+import ComoLoHacemos from './components/ComoLoHacemos'
 import EjesEstrategicos from './components/EjesEstrategicos'
 import Valores from './components/Valores'
-import VocesDeLaCamara from './components/VocesDeLaCamara'
-import QRSection from './components/QRSection'
-import Footer from './components/Footer'
+import Ecosistema from './components/Ecosistema'
+
+export const SECTIONS = [
+  { id: 'mi-historia',  label: 'Mi historia',            ep: '00' },
+  { id: 'la-cchia',     label: 'La CCHIA',                ep: '01' },
+  { id: 'definicion',   label: 'Definición y Propósito',  ep: '02' },
+  { id: 'vision',       label: 'Visión Estratégica',       ep: '03' },
+  { id: 'como',         label: 'Cómo lo hacemos',          ep: '04' },
+  { id: 'ejes',         label: 'Ejes Estratégicos',        ep: '05' },
+  { id: 'valores',      label: 'Lo que nos define',        ep: '06' },
+  { id: 'ecosistema',   label: 'Únete al ecosistema',      ep: '07' },
+]
+
+const MAP = {
+  'mi-historia': MiHistoria,
+  'la-cchia':    LaCCHIA,
+  'definicion':  Definicion,
+  'vision':      Vision,
+  'como':        ComoLoHacemos,
+  'ejes':        EjesEstrategicos,
+  'valores':     Valores,
+  'ecosistema':  Ecosistema,
+}
 
 export default function App() {
+  const [speaker, setSpeaker]         = useState(null)   // null = pantalla de selección
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [active, setActive]           = useState('mi-historia')
+
+  const idx    = SECTIONS.findIndex(s => s.id === active)
+  const Comp   = MAP[active]
+  const goNext = () => { if (idx < SECTIONS.length - 1) setActive(SECTIONS[idx + 1].id) }
+  const goPrev = () => { if (idx > 0) setActive(SECTIONS[idx - 1].id) }
+
+  // --- Pantalla de selección de speaker ---
+  if (!speaker) {
+    return (
+      <AnimatePresence>
+        <SpeakerSelect onSelect={setSpeaker} />
+      </AnimatePresence>
+    )
+  }
+
+  // --- Presentación ---
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        {/* 1. Hook de impacto */}
-        <Hero />
-        {/* 2. Definición y Propósito (mapa conceptual: nodo 1) */}
-        <Definicion />
-        {/* 3. Visión Estratégica (mapa conceptual: nodo 2) */}
-        <Vision />
-        {/* 4. Ejes Estratégicos (mapa conceptual: nodo 3, 4 ejes) */}
-        <EjesEstrategicos />
-        {/* 5. Valores Fundamentales (mapa conceptual: nodo 4) */}
-        <Valores />
-        {/* 6. Voces de la Cámara — discurso institucional */}
-        <VocesDeLaCamara />
-        {/* 7. CTA + QR */}
-        <QRSection />
+    <div className="flex h-screen overflow-hidden" style={{ background: '#00101f' }}>
+      <Sidebar
+        active={active}
+        setActive={setActive}
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(o => !o)}
+        speaker={speaker}
+        onChangeSpeaker={() => { setSpeaker(null); setActive('mi-historia') }}
+      />
+
+      <main className="flex-1 overflow-y-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, x: 32 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -32 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="min-h-full"
+          >
+            <Comp
+              episode={SECTIONS[idx]}
+              goNext={goNext}
+              goPrev={goPrev}
+              hasNext={idx < SECTIONS.length - 1}
+              hasPrev={idx > 0}
+              speaker={speaker}
+            />
+          </motion.div>
+        </AnimatePresence>
       </main>
-      <Footer />
     </div>
   )
 }
