@@ -254,8 +254,8 @@ function ComicPanel({ panel, index, isActive, onClick }) {
 }
 
 const SPEAKER_INFO = {
-  cami:   { name: 'Camila Bañares',  role: 'Vicepresidenta · CamiDevAI',        color: '#008996', emoji: '👩‍💻' },
-  edison: { name: 'Edison Vásquez',  role: 'Presidente · Estrategia & Alianzas', color: '#4a90d9', emoji: '🎯'  },
+  cami:   { name: 'Camila Bañares',  role: 'Vicepresidenta · CamiDevAI',        color: '#008996', photo: '/Fotos/Camila/Camila 1.png' },
+  edison: { name: 'Edison Vásquez',  role: 'Presidente · Estrategia & Alianzas', color: '#4a90d9', photo: '/Fotos/Edison/edison 1.png' },
 }
 
 export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, speaker = 'cami' }) {
@@ -275,7 +275,11 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
         className="inline-flex items-center gap-3 px-4 py-3 rounded-xl mb-8"
         style={{ background: `${sp.color}12`, border: `1px solid ${sp.color}30` }}
       >
-        <span className="text-xl">{sp.emoji}</span>
+        <img
+          src={sp.photo}
+          alt={sp.name}
+          style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', flexShrink: 0 }}
+        />
         <div>
           <p className="text-white font-bold text-sm leading-tight">{sp.name}</p>
           <p className="text-white/35 text-xs">{sp.role}</p>

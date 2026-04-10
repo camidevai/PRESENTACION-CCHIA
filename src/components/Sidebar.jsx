@@ -16,42 +16,42 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
       className="flex-shrink-0 flex flex-col h-full overflow-hidden"
       style={{ background: 'rgba(0,12,26,0.99)', borderRight: '1px solid rgba(255,255,255,0.06)' }}
     >
-      {/* Header: toggle + logo */}
-      <div
-        className="flex items-center gap-3 px-3 border-b border-white/5"
-        style={{ minHeight: '64px', paddingTop: '14px', paddingBottom: '14px' }}
-      >
-        {/* Toggle button */}
+      {/* Toggle button */}
+      <div className="flex items-center justify-between px-3 border-b border-white/5" style={{ minHeight: '48px' }}>
         <button
           onClick={onToggle}
           title={isOpen ? 'Colapsar menú' : 'Expandir menú'}
           className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors hover:bg-white/10"
           style={{ color: 'rgba(255,255,255,0.35)' }}
         >
-          {/* Hamburger icon */}
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <line x1="1" y1="3.5"  x2="14" y2="3.5" />
             <line x1="1" y1="7.5"  x2="14" y2="7.5" />
             <line x1="1" y1="11.5" x2="14" y2="11.5" />
           </svg>
         </button>
+      </div>
 
-        {/* Logo — solo visible cuando está abierto */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.img
-              key="logo"
+      {/* Logo — sección propia */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="logo-section"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="flex justify-center border-b border-white/5"
+            style={{ padding: '20px 16px' }}
+          >
+            <img
               src="/logo-cchia.png"
               alt="CCHIA"
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
-              transition={{ duration: 0.2 }}
-              style={{ height: '28px', width: 'auto', filter: 'brightness(0) invert(1)', flexShrink: 0 }}
+              style={{ width: '160px', height: 'auto', filter: 'brightness(0) invert(1)' }}
             />
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3" style={{ padding: isOpen ? '12px 8px' : '12px 6px' }}>

@@ -107,15 +107,19 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
             <div
               style={{
                 background: 'white',
-                borderRadius: '16px',
-                padding: '16px',
+                borderRadius: '20px',
+                padding: '20px',
                 position: 'relative',
                 zIndex: 1,
+                width: '45vw',
+                maxWidth: '420px',
+                minWidth: '200px',
               }}
             >
               <QRCodeSVG
                 value="https://cchia.cl"
-                size={220}
+                size="100%"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
                 bgColor="#FFFFFF"
                 fgColor="#003764"
                 level="H"
