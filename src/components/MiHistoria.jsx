@@ -260,9 +260,17 @@ const SPEAKER_INFO = {
 
 export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, speaker = 'cami' }) {
   const [panelIdx, setPanelIdx] = useState(0)
+  const [modalOpen, setModalOpen] = useState(false)
   const story = STORIES[speaker] || STORIES.cami
   const active = story[panelIdx]
   const sp = SPEAKER_INFO[speaker] || SPEAKER_INFO.cami
+
+  const hasVideo = active.video || active.videos
+
+  function handlePanelClick(i) {
+    setPanelIdx(i)
+    if (story[i].video || story[i].videos) setModalOpen(true)
+  }
 
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
@@ -294,12 +302,12 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
             panel={panel}
             index={i}
             isActive={panelIdx === i}
-            onClick={() => setPanelIdx(i)}
+            onClick={() => handlePanelClick(i)}
           />
         ))}
       </div>
 
-      {/* Expanded detail */}
+      {/* Info del panel activo (sin video) */}
       <AnimatePresence mode="wait">
         <motion.div
           key={`${speaker}-${panelIdx}`}
@@ -307,64 +315,168 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.25 }}
-          className="rounded-2xl overflow-hidden"
-          style={{ border: `1px solid ${active.accentColor}30` }}
+          className="p-5 rounded-2xl"
+          style={{ background: `${active.accentColor}0d`, border: `1px solid ${active.accentColor}25` }}
         >
-          <div className="flex flex-col sm:flex-row">
-            {/* Video(s) con controles */}
-            {active.videos ? (
-              <div className="flex flex-shrink-0 gap-1" style={{ background: '#000' }}>
-                {active.videos.map((src, vi) => (
-                  <div key={vi} style={{ width: '180px', aspectRatio: '1/1', flexShrink: 0 }}>
-                    <video
-                      key={`detail-${speaker}-${panelIdx}-${vi}`}
-                      src={src}
-                      controls
-                      playsInline
-                      className="w-full h-full object-cover"
-                      style={{ display: 'block' }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : active.video ? (
-              <div
-                className="flex-shrink-0"
-                style={{ width: '220px', aspectRatio: '1/1', background: '#000' }}
-              >
-                <video
-                  key={`detail-${speaker}-${panelIdx}`}
-                  src={active.video}
-                  controls
-                  playsInline
-                  className="w-full h-full object-cover"
-                  style={{ display: 'block' }}
-                />
-              </div>
-            ) : null}
-
-            {/* Info */}
-            <div
-              className="p-5 flex-1"
-              style={{ background: `${active.accentColor}0d` }}
+          <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: active.accentColor }}>
+            {active.caption}
+          </p>
+          <h3 className="text-white text-xl font-black leading-tight mb-2">{active.title}</h3>
+          <blockquote className="text-white/70 text-sm font-light leading-relaxed mb-2 italic">
+            {active.dialogType === 'thought' ? '💭 ' : '💬 '}"{active.dialog}"
+          </blockquote>
+          <p className="text-white/40 text-sm leading-relaxed">{active.narrative}</p>
+          {hasVideo && (
+            <button
+              onClick={() => setModalOpen(true)}
+              className="mt-4 flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg transition-all"
+              style={{ background: `${active.accentColor}20`, color: active.accentColor, border: `1px solid ${active.accentColor}40` }}
             >
-              <p
-                className="text-[10px] font-black tracking-[0.25em] uppercase mb-1"
-                style={{ color: active.accentColor }}
-              >
-                {active.caption}
-              </p>
-              <h3 className="text-white text-xl font-black leading-tight mb-3">
-                {active.title}
-              </h3>
-              <blockquote className="text-white/80 text-base font-light leading-relaxed mb-3 italic">
-                {active.dialogType === 'thought' ? '💭 ' : '💬 '}
-                "{active.dialog}"
-              </blockquote>
-              <p className="text-white/45 text-sm leading-relaxed">{active.narrative}</p>
-            </div>
-          </div>
+              ▶ Ver video
+            </button>
+          )}
         </motion.div>
+      </AnimatePresence>
+
+      {/* Modal carrusel */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setModalOpen(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 9999,
+              background: 'rgba(0,0,0,0.88)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '24px',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              onClick={e => e.stopPropagation()}
+              style={{
+                background: '#000',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                width: '100%',
+                maxWidth: story[panelIdx].videos ? '700px' : '480px',
+                border: `1px solid ${story[panelIdx].accentColor}40`,
+                boxShadow: `0 0 60px ${story[panelIdx].accentColor}25`,
+                position: 'relative',
+              }}
+            >
+              {/* Cerrar */}
+              <button
+                onClick={() => setModalOpen(false)}
+                style={{
+                  position: 'absolute', top: '12px', right: '12px', zIndex: 10,
+                  width: '32px', height: '32px', borderRadius: '50%',
+                  background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'white', fontSize: '18px', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >×</button>
+
+              {/* Flecha izquierda */}
+              {panelIdx > 0 && (
+                <button
+                  onClick={() => setPanelIdx(i => i - 1)}
+                  style={{
+                    position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+                    width: '36px', height: '36px', borderRadius: '50%',
+                    background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'white', fontSize: '18px', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >‹</button>
+              )}
+
+              {/* Flecha derecha */}
+              {panelIdx < story.length - 1 && (
+                <button
+                  onClick={() => setPanelIdx(i => i + 1)}
+                  style={{
+                    position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+                    width: '36px', height: '36px', borderRadius: '50%',
+                    background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'white', fontSize: '18px', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >›</button>
+              )}
+
+              {/* Video(s) */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`modal-video-${panelIdx}`}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {story[panelIdx].videos ? (
+                    <div className="flex gap-1" style={{ padding: '8px' }}>
+                      {story[panelIdx].videos.map((src, vi) => (
+                        <div key={vi} style={{ flex: 1, aspectRatio: '1/1' }}>
+                          <video
+                            src={src} controls playsInline muted autoPlay
+                            className="w-full h-full object-cover"
+                            style={{ display: 'block', borderRadius: '12px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : story[panelIdx].video ? (
+                    <div style={{ aspectRatio: '1/1', width: '100%' }}>
+                      <video
+                        src={story[panelIdx].video} controls playsInline muted autoPlay
+                        className="w-full h-full object-cover"
+                        style={{ display: 'block' }}
+                      />
+                    </div>
+                  ) : (
+                    <div style={{ aspectRatio: '1/1', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111' }}>
+                      <span style={{ fontSize: '4rem' }}>{story[panelIdx].emoji}</span>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Caption + dots */}
+              <div className="px-5 py-4" style={{ background: `${story[panelIdx].accentColor}0d` }}>
+                <p className="text-[10px] font-black tracking-widest uppercase mb-0.5" style={{ color: story[panelIdx].accentColor }}>
+                  {story[panelIdx].caption}
+                </p>
+                <p className="text-white font-black text-base mb-3">{story[panelIdx].title}</p>
+                {/* Dots indicadores */}
+                <div className="flex gap-1.5 justify-center">
+                  {story.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPanelIdx(i)}
+                      style={{
+                        width: panelIdx === i ? '20px' : '6px',
+                        height: '6px',
+                        borderRadius: '3px',
+                        background: panelIdx === i ? story[panelIdx].accentColor : 'rgba(255,255,255,0.2)',
+                        border: 'none', cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        padding: 0,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
     </EpisodeLayout>
   )
