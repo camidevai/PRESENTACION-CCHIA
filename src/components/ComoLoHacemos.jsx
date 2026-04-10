@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const COMO = [
   { img: '/Como lo hacemos/conectamos.png',  title: 'Conectamos', desc: 'Tejemos redes entre actores que antes operaban en silos: academia, industria, Estado, sociedad civil.' },
@@ -9,9 +10,11 @@ const COMO = [
 ]
 
 export default function ComoLoHacemos({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <p className="text-white/40 text-base leading-relaxed max-w-2xl mb-10">
+      <p className="text-base leading-relaxed max-w-2xl mb-10" style={{ color: tk.textFaint }}>
         CCHIA actúa como catalizador del ecosistema, operando en cuatro dimensiones complementarias.
       </p>
 
@@ -23,7 +26,10 @@ export default function ComoLoHacemos({ episode, goNext, goPrev, hasNext, hasPre
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             className="rounded-2xl overflow-hidden group"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{
+              background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : tk.bgCard,
+              border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : `1px solid ${tk.borderCard}`,
+            }}
           >
             <div className="overflow-hidden" style={{ aspectRatio: '1/1' }}>
               <img
@@ -33,8 +39,8 @@ export default function ComoLoHacemos({ episode, goNext, goPrev, hasNext, hasPre
               />
             </div>
             <div className="px-5 py-4">
-              <h3 className="text-white font-black text-base mb-1">{item.title}</h3>
-              <p className="text-white/45 text-sm leading-relaxed">{item.desc}</p>
+              <h3 className="font-black text-base mb-1" style={{ color: tk.text }}>{item.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: tk.textMuted }}>{item.desc}</p>
             </div>
           </motion.div>
         ))}

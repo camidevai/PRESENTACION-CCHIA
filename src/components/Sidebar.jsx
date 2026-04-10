@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { SECTIONS } from '../App'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const SPEAKER_INFO = {
   cami:   { name: 'Camila Bañares',  color: '#008996', emoji: '👩‍💻' },
@@ -8,27 +9,62 @@ const SPEAKER_INFO = {
 
 export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, onChangeSpeaker }) {
   const sp = SPEAKER_INFO[speaker] || SPEAKER_INFO.cami
+  const { theme, toggleTheme } = useTheme()
+  const tk = TOKENS[theme]
 
   return (
     <motion.aside
       animate={{ width: isOpen ? 288 : 56 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className="flex-shrink-0 flex flex-col h-full overflow-hidden"
-      style={{ background: 'rgba(0,12,26,0.99)', borderRight: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ background: tk.bgSidebar, borderRight: `1px solid ${tk.border}`, transition: 'background 0.3s, border 0.3s' }}
     >
-      {/* Toggle button */}
-      <div className="flex items-center justify-between px-3 border-b border-white/5" style={{ minHeight: '48px' }}>
+      {/* Toggle button + theme switcher */}
+      <div
+        className="flex items-center justify-between px-3"
+        style={{ minHeight: '48px', borderBottom: `1px solid ${tk.divider}` }}
+      >
         <button
           onClick={onToggle}
           title={isOpen ? 'Colapsar menú' : 'Expandir menú'}
-          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors hover:bg-white/10"
-          style={{ color: 'rgba(255,255,255,0.35)' }}
+          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+          style={{ color: tk.textFaint }}
+          onMouseEnter={e => e.currentTarget.style.background = theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,55,100,0.08)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <line x1="1" y1="3.5"  x2="14" y2="3.5" />
             <line x1="1" y1="7.5"  x2="14" y2="7.5" />
             <line x1="1" y1="11.5" x2="14" y2="11.5" />
           </svg>
+        </button>
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          title={theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300"
+          style={{ color: tk.textMuted, background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,55,100,0.08)' }}
+        >
+          {theme === 'dark' ? (
+            // Sol
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="12" cy="12" r="4"/>
+              <line x1="12" y1="2"  x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+              <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+              <line x1="2" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="22" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+              <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+            </svg>
+          ) : (
+            // Luna
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          )}
         </button>
       </div>
 
@@ -47,7 +83,7 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
             <img
               src="/logo-cchia.png"
               alt="CCHIA"
-              style={{ width: '160px', height: 'auto', filter: 'brightness(0) invert(1)' }}
+              style={{ width: '160px', height: 'auto', filter: tk.logoFilter, transition: 'filter 0.3s' }}
             />
           </motion.div>
         )}
@@ -61,7 +97,8 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-white/20 text-[10px] font-bold tracking-[0.2em] uppercase px-3 mb-2"
+              className="text-[10px] font-bold tracking-[0.2em] uppercase px-3 mb-2"
+              style={{ color: tk.textFaint }}
             >
               Episodios
             </motion.p>
@@ -81,15 +118,15 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
                     padding: isOpen ? '10px 12px' : '10px 0',
                     justifyContent: isOpen ? 'flex-start' : 'center',
                     gap: isOpen ? '10px' : 0,
-                    background: isActive ? 'rgba(0,137,150,0.15)' : 'transparent',
-                    border: isActive ? '1px solid rgba(0,137,150,0.25)' : '1px solid transparent',
+                    background: isActive ? tk.navActive : 'transparent',
+                    border: isActive ? `1px solid ${tk.navBorder}` : '1px solid transparent',
                   }}
                 >
                   <span
                     className="font-black tracking-wider tabular-nums flex-shrink-0"
                     style={{
                       fontSize: '10px',
-                      color: isActive ? '#008996' : 'rgba(255,255,255,0.22)',
+                      color: isActive ? '#008996' : tk.textFaint,
                       minWidth: isOpen ? '28px' : 'auto',
                     }}
                   >
@@ -104,7 +141,7 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.15 }}
                         className="text-sm font-medium leading-tight flex-1 text-left"
-                        style={{ color: isActive ? 'white' : 'rgba(255,255,255,0.4)' }}
+                        style={{ color: isActive ? tk.text : tk.textMuted }}
                       >
                         {s.label}
                       </motion.span>
@@ -126,7 +163,7 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
       </nav>
 
       {/* Footer: speaker + cambiar */}
-      <div className="border-t border-white/5" style={{ padding: isOpen ? '14px 16px' : '14px 8px' }}>
+      <div style={{ borderTop: `1px solid ${tk.divider}`, padding: isOpen ? '14px 16px' : '14px 8px' }}>
         <AnimatePresence>
           {isOpen ? (
             <motion.div
@@ -136,24 +173,17 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {/* Speaker badge */}
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-lg flex-shrink-0">{sp.emoji}</span>
                 <div className="min-w-0">
-                  <p className="text-white text-xs font-bold leading-tight truncate">{sp.name}</p>
-                  <p className="text-white/30 text-[10px]">Presentando</p>
+                  <p className="text-xs font-bold leading-tight truncate" style={{ color: tk.text }}>{sp.name}</p>
+                  <p className="text-[10px]" style={{ color: tk.textFaint }}>Presentando</p>
                 </div>
-                <span
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse"
-                  style={{ background: sp.color }}
-                />
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: sp.color }} />
               </div>
-
-              {/* Cambiar presentador */}
               <button
                 onClick={onChangeSpeaker}
-                className="w-full text-left text-[11px] font-semibold transition-colors hover:text-white/60"
-                style={{ color: 'rgba(255,255,255,0.25)' }}
+                className="w-full text-left text-[11px] font-semibold transition-colors"
+                style={{ color: tk.textFaint }}
               >
                 ↩ Cambiar presentador
               </button>
@@ -168,7 +198,7 @@ export default function Sidebar({ active, setActive, isOpen, onToggle, speaker, 
               title="Cambiar presentador"
               className="w-full flex justify-center"
             >
-              <span className="text-lg">{sp.emoji}</span>
+              <span className="text-lg" style={{ color: sp.color }}>●</span>
             </motion.button>
           )}
         </AnimatePresence>

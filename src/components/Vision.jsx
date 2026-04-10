@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
 import { vision } from '../data/content'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 export default function Vision({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start w-full">
@@ -15,7 +18,7 @@ export default function Vision({ episode, goNext, goPrev, hasNext, hasPrev }) {
             transition={{ delay: 0.1 }}
             className="mb-10"
           >
-            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5">
+            <h2 className="text-3xl sm:text-4xl font-black leading-tight mb-5" style={{ color: tk.text }}>
               Chile como Referente<br />
               <span style={{
                 background: 'linear-gradient(120deg, #008996, #00c9b1)',
@@ -26,10 +29,10 @@ export default function Vision({ episode, goNext, goPrev, hasNext, hasPrev }) {
                 Latinoamericano de IA
               </span>
             </h2>
-            <p className="text-white/50 text-base leading-relaxed mb-4 max-w-sm">
+            <p className="text-base leading-relaxed mb-4 max-w-sm" style={{ color: tk.textMuted }}>
               Visualizamos un Chile donde la inteligencia artificial es una ventaja competitiva real: accesible para las PYMEs, atractiva para los jóvenes y reconocida internacionalmente por su enfoque ético.
             </p>
-            <p className="text-white/30 text-sm leading-relaxed max-w-sm">
+            <p className="text-sm leading-relaxed max-w-sm" style={{ color: tk.textFaint }}>
               No es una visión de largo plazo incierto. Es el trabajo que hacemos hoy, con cada alianza, cada capacitación y cada política que impulsamos.
             </p>
           </motion.div>
@@ -45,9 +48,8 @@ export default function Vision({ episode, goNext, goPrev, hasNext, hasPrev }) {
                 key={i}
                 className="flex items-center gap-4 p-4 rounded-xl"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  borderLeft: '3px solid #008996',
-                  border: '1px solid rgba(255,255,255,0.07)',
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : tk.bgCard,
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : `1px solid ${tk.borderCard}`,
                   borderLeft: '3px solid #008996',
                 }}
               >
@@ -57,7 +59,7 @@ export default function Vision({ episode, goNext, goPrev, hasNext, hasPrev }) {
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <p className="text-white/80 font-medium text-sm leading-snug">{item}</p>
+                <p className="font-medium text-sm leading-snug" style={{ color: tk.text }}>{item}</p>
               </div>
             ))}
           </motion.div>

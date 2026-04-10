@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
 import { ejes } from '../data/content'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const IMAGES = {
   default:      '/Ejes estrategicos/Ejes estrategicos.png',
@@ -12,6 +13,8 @@ const IMAGES = {
 }
 
 export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   const [active, setActive] = useState('conexion')
 
   const currentImg = IMAGES[active] ?? IMAGES.default
@@ -26,7 +29,8 @@ export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, has
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/40 text-base leading-relaxed max-w-sm mb-8"
+            className="text-base leading-relaxed max-w-sm mb-8"
+            style={{ color: tk.textFaint }}
           >
             Cuatro ejes articulan toda la acción de CCHIA. Haz click en cada uno para explorar sus iniciativas.
           </motion.p>
@@ -43,14 +47,14 @@ export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, has
                   onClick={() => setActive(isActive ? null : eje.id)}
                   className="rounded-xl overflow-hidden cursor-pointer transition-all duration-300"
                   style={{
-                    background: isActive ? 'rgba(0,137,150,0.08)' : 'rgba(255,255,255,0.04)',
-                    border: isActive ? '1px solid rgba(0,137,150,0.5)' : '1px solid rgba(255,255,255,0.07)',
+                    background: isActive ? 'rgba(0,137,150,0.08)' : (theme === 'dark' ? 'rgba(255,255,255,0.04)' : tk.bgCard),
+                    border: isActive ? '1px solid rgba(0,137,150,0.5)' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : `1px solid ${tk.borderCard}`),
                     boxShadow: isActive ? '0 0 20px rgba(0,137,150,0.1)' : 'none',
                   }}
                 >
                   <div className="px-5 py-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-white font-black text-base leading-tight">{eje.title}</h3>
+                      <h3 className="font-black text-base leading-tight" style={{ color: tk.text }}>{eje.title}</h3>
                       <motion.span
                         animate={{ rotate: isActive ? 45 : 0 }}
                         transition={{ duration: 0.2 }}
@@ -58,7 +62,7 @@ export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, has
                       >+</motion.span>
                     </div>
                     {!isActive && (
-                      <p className="text-white/35 text-xs leading-relaxed mt-1">{eje.description}</p>
+                      <p className="text-xs leading-relaxed mt-1" style={{ color: tk.textFaint }}>{eje.description}</p>
                     )}
 
                     <AnimatePresence>
@@ -68,16 +72,16 @@ export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, has
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           className="overflow-hidden mt-3 pt-3"
-                          style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+                          style={{ borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : `1px solid ${tk.borderCard}` }}
                         >
-                          <p className="text-white/50 text-sm leading-relaxed mb-3">{eje.description}</p>
+                          <p className="text-sm leading-relaxed mb-3" style={{ color: tk.textMuted }}>{eje.description}</p>
                           <div className="space-y-2">
                             {eje.subnodes.map((node, j) => (
                               <div key={j} className="flex gap-3 items-start">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#008996] mt-1.5 flex-shrink-0" />
                                 <div>
-                                  <p className="text-white font-semibold text-sm">{node.title}</p>
-                                  <p className="text-white/35 text-xs leading-relaxed mt-0.5">{node.desc}</p>
+                                  <p className="font-semibold text-sm" style={{ color: tk.text }}>{node.title}</p>
+                                  <p className="text-xs leading-relaxed mt-0.5" style={{ color: tk.textFaint }}>{node.desc}</p>
                                 </div>
                               </div>
                             ))}

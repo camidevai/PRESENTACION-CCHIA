@@ -1,13 +1,17 @@
 import { motion } from 'framer-motion'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 export default function EpisodeLayout({
-  episode, children, goNext, goPrev, hasNext, hasPrev, dark = true,
+  episode, children, goNext, goPrev, hasNext, hasPrev,
 }) {
-  const bg   = dark ? '#00101f' : '#F4F8FB'
-  const text = dark ? 'white'   : '#003764'
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: bg, position: 'relative' }}>
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ background: tk.bg, position: 'relative', transition: 'background 0.3s' }}
+    >
       {/* Logo watermark */}
       <img
         src="/logo-cchia.png"
@@ -15,20 +19,21 @@ export default function EpisodeLayout({
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
+          top: '50%', left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '55%',
-          maxWidth: '520px',
+          width: '55%', maxWidth: '520px',
           objectFit: 'contain',
-          opacity: 0.2,
+          opacity: tk.watermark,
+          filter: tk.logoFilter,
           pointerEvents: 'none',
           userSelect: 'none',
           zIndex: 0,
+          transition: 'opacity 0.3s',
         }}
       />
+
       {/* Episode header */}
-      <div className="px-8 pt-8 pb-0">
+      <div className="px-8 pt-8 pb-0" style={{ position: 'relative', zIndex: 1 }}>
         <div className="flex items-center gap-3 mb-5">
           <span
             className="px-3 py-1 rounded-full text-[10px] font-black tracking-[0.25em] uppercase"
@@ -36,8 +41,8 @@ export default function EpisodeLayout({
           >
             EP {episode.ep}
           </span>
-          <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-          <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.25)' }}>CCHIA · 2025</span>
+          <div className="flex-1 h-px" style={{ background: tk.divider }} />
+          <span className="text-xs font-medium" style={{ color: tk.textFaint }}>CCHIA · 2025</span>
         </div>
 
         <motion.h1
@@ -45,7 +50,7 @@ export default function EpisodeLayout({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-4xl md:text-5xl font-black tracking-tight leading-none mb-1"
-          style={{ color: text }}
+          style={{ color: tk.text }}
         >
           {episode.label}
         </motion.h1>
@@ -53,18 +58,18 @@ export default function EpisodeLayout({
       </div>
 
       {/* Contenido */}
-      <div className="flex-1 px-8 py-8">{children}</div>
+      <div className="flex-1 px-8 py-8" style={{ position: 'relative', zIndex: 1 }}>{children}</div>
 
-      {/* Navegación entre episodios */}
+      {/* Navegación */}
       <div
         className="px-8 pb-8 pt-5 flex justify-between items-center"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+        style={{ borderTop: `1px solid ${tk.divider}`, position: 'relative', zIndex: 1 }}
       >
         <button
           onClick={goPrev}
           disabled={!hasPrev}
           className="text-sm font-medium transition-colors"
-          style={{ color: hasPrev ? 'rgba(255,255,255,0.4)' : 'transparent' }}
+          style={{ color: hasPrev ? tk.textMuted : 'transparent' }}
         >
           ← Anterior
         </button>

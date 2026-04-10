@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { QRCodeSVG } from 'qrcode.react'
 import EpisodeLayout from './EpisodeLayout'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const BENEFICIOS = [
   { label: 'Acceso a conocimiento y comunidad',    num: '01' },
@@ -10,6 +11,8 @@ const BENEFICIOS = [
 ]
 
 export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center w-full">
@@ -33,7 +36,7 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
           >
             Forma parte<br />del ecosistema.
           </p>
-          <p className="text-white/40 text-base leading-relaxed mb-10 max-w-sm">
+          <p className="text-base leading-relaxed mb-10 max-w-sm" style={{ color: tk.textFaint }}>
             CCHIA conecta a quienes construyen el futuro de la IA en Chile. Profesionales, empresas, academia y gobierno — hacia un mismo norte.
           </p>
 
@@ -47,13 +50,13 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
                 transition={{ delay: 0.25 + i * 0.08 }}
                 className="flex items-center gap-4 py-3 px-4 rounded-xl"
                 style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.07)',
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : tk.bgCard,
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : `1px solid ${tk.borderCard}`,
                   borderLeft: '3px solid #008996',
                 }}
               >
                 <span className="text-[#008996] font-black text-sm tabular-nums w-6 flex-shrink-0">{b.num}</span>
-                <p className="text-white/70 text-sm font-medium">{b.label}</p>
+                <p className="text-sm font-medium" style={{ color: tk.text }}>{b.label}</p>
               </motion.div>
             ))}
           </div>
@@ -63,7 +66,8 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="text-white/30 text-sm"
+            className="text-sm"
+            style={{ color: tk.textFaint }}
           >
             Visita{' '}
             <span style={{ color: '#00c9b1', fontWeight: 700, fontSize: '1rem' }}>cchia.cl</span>
@@ -140,7 +144,7 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
               >
                 cchia.cl
               </p>
-              <p className="text-white/25 text-xs mt-1 tracking-widest uppercase">Cámara Chilena de IA</p>
+              <p className="text-xs mt-1 tracking-widest uppercase" style={{ color: tk.textFaint }}>Cámara Chilena de IA</p>
             </div>
           </div>
         </motion.div>

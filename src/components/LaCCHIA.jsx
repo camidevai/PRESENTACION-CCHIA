@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const PILLARS = [
   { label: 'Sin fines de lucro', desc: 'Independencia e imparcialidad en todo lo que hacemos.' },
@@ -8,6 +9,8 @@ const PILLARS = [
 ]
 
 export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start w-full">
@@ -20,7 +23,7 @@ export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
             transition={{ delay: 0.1 }}
             className="mb-10"
           >
-            <p className="text-4xl sm:text-5xl font-black text-white leading-tight mb-2">
+            <p className="text-4xl sm:text-5xl font-black leading-tight mb-2" style={{ color: tk.text }}>
               No estamos ante un
             </p>
             <p
@@ -34,7 +37,7 @@ export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
             >
               cambio tecnológico.
             </p>
-            <p className="text-4xl sm:text-5xl font-black text-white leading-tight">
+            <p className="text-4xl sm:text-5xl font-black leading-tight" style={{ color: tk.text }}>
               Estamos ante un cambio de paradigma.
             </p>
           </motion.div>
@@ -51,7 +54,8 @@ export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-white/50 text-lg leading-relaxed mb-12 max-w-sm"
+            className="text-lg leading-relaxed mb-12 max-w-sm"
+            style={{ color: tk.textMuted }}
           >
             CCHIA es la Cámara Chilena de Inteligencia Artificial. El sistema operativo del ecosistema de IA en Chile.
           </motion.p>
@@ -68,8 +72,8 @@ export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
                 key={i}
                 className="flex items-center gap-4 p-4 rounded-xl"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.07)',
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : tk.bgCard,
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : `1px solid ${tk.borderCard}`,
                   borderLeft: '3px solid #008996',
                 }}
               >
@@ -77,8 +81,8 @@ export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
-                  <p className="text-white font-bold text-sm leading-tight">{p.label}</p>
-                  <p className="text-white/40 text-xs leading-relaxed mt-0.5">{p.desc}</p>
+                  <p className="font-bold text-sm leading-tight" style={{ color: tk.text }}>{p.label}</p>
+                  <p className="text-xs leading-relaxed mt-0.5" style={{ color: tk.textFaint }}>{p.desc}</p>
                 </div>
               </div>
             ))}

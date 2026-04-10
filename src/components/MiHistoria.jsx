@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 // speaker viene como prop desde App.jsx (definido en la pantalla de selección)
 import { motion, AnimatePresence } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const STORIES = {
   cami: [
@@ -161,7 +162,7 @@ function VideoThumbnail({ src, accentColor, isActive }) {
   )
 }
 
-function ComicPanel({ panel, index, isActive, onClick }) {
+function ComicPanel({ panel, index, isActive, onClick, tk }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -232,7 +233,7 @@ function ComicPanel({ panel, index, isActive, onClick }) {
         {/* Panel number */}
         <span
           className="absolute bottom-2 right-2 text-[10px] font-black tabular-nums z-10"
-          style={{ color: 'rgba(255,255,255,0.35)' }}
+          style={{ color: tk.textFaint }}
         >
           {String(index + 1).padStart(2, '0')}
         </span>
@@ -240,7 +241,7 @@ function ComicPanel({ panel, index, isActive, onClick }) {
 
       {/* Título */}
       <div className="px-2.5 py-2" style={{ background: 'rgba(0,10,20,0.97)' }}>
-        <p className="text-white font-black text-[10px] leading-tight text-center">
+        <p className="font-black text-[10px] leading-tight text-center" style={{ color: '#ffffff' }}>
           {panel.title}
         </p>
       </div>
@@ -259,6 +260,8 @@ const SPEAKER_INFO = {
 }
 
 export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, speaker = 'cami' }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   const [panelIdx, setPanelIdx] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const story = STORIES[speaker] || STORIES.cami
@@ -274,7 +277,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
 
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <p className="text-white/40 text-base leading-relaxed max-w-2xl mb-8">
+      <p className="text-base leading-relaxed max-w-2xl mb-8" style={{ color: tk.textFaint }}>
         Antes de hablar de la Cámara, hay una historia que la hizo posible.
       </p>
 
@@ -289,8 +292,8 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
           style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', flexShrink: 0 }}
         />
         <div>
-          <p className="text-white font-bold text-sm leading-tight">{sp.name}</p>
-          <p className="text-white/35 text-xs">{sp.role}</p>
+          <p className="font-bold text-sm leading-tight" style={{ color: tk.text }}>{sp.name}</p>
+          <p className="text-xs" style={{ color: tk.textFaint }}>{sp.role}</p>
         </div>
       </div>
 
@@ -303,6 +306,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
             index={i}
             isActive={panelIdx === i}
             onClick={() => handlePanelClick(i)}
+            tk={tk}
           />
         ))}
       </div>
@@ -321,11 +325,11 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
           <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: active.accentColor }}>
             {active.caption}
           </p>
-          <h3 className="text-white text-xl font-black leading-tight mb-2">{active.title}</h3>
-          <blockquote className="text-white/70 text-sm font-light leading-relaxed mb-2 italic">
+          <h3 className="text-xl font-black leading-tight mb-2" style={{ color: tk.text }}>{active.title}</h3>
+          <blockquote className="text-sm font-light leading-relaxed mb-2 italic" style={{ color: tk.textMuted }}>
             {active.dialogType === 'thought' ? '💭 ' : '💬 '}"{active.dialog}"
           </blockquote>
-          <p className="text-white/40 text-sm leading-relaxed">{active.narrative}</p>
+          <p className="text-sm leading-relaxed" style={{ color: tk.textFaint }}>{active.narrative}</p>
           {hasVideo && (
             <button
               onClick={() => setModalOpen(true)}
@@ -454,7 +458,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
                 <p className="text-[10px] font-black tracking-widest uppercase mb-0.5" style={{ color: story[panelIdx].accentColor }}>
                   {story[panelIdx].caption}
                 </p>
-                <p className="text-white font-black text-base mb-3">{story[panelIdx].title}</p>
+                <p className="font-black text-base mb-3" style={{ color: tk.text }}>{story[panelIdx].title}</p>
                 {/* Dots indicadores */}
                 <div className="flex gap-1.5 justify-center">
                   {story.map((_, i) => (

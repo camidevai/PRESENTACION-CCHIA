@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTheme, TOKENS } from './context/ThemeContext.jsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import SpeakerSelect from './components/SpeakerSelect'
 import Sidebar from './components/Sidebar'
@@ -53,8 +54,10 @@ export default function App() {
   }
 
   // --- Presentación ---
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#00101f' }}>
+    <div data-theme={theme} className="flex h-screen overflow-hidden" style={{ background: tk.bg, transition: 'background 0.3s' }}>
       <Sidebar
         active={active}
         setActive={setActive}
