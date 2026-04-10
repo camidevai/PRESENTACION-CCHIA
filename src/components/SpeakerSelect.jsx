@@ -28,7 +28,7 @@ export default function SpeakerSelect({ onSelect }) {
   const [hovered, setHovered] = useState(null)
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#00101f' }}>
+    <div className="force-dark" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#00101f' }}>
 
       {/* ── Mitades de foto ── */}
       {SPEAKERS.map((s) => {

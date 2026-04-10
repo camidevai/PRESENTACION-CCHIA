@@ -8,26 +8,42 @@
 html { scroll-behavior: smooth; }
 body { background-color: #F4F8FB; color: #003764; font-family: 'Inter', system-ui, sans-serif; }
 
-/* ── Theme: light overrides ── */
+/* ── Theme: light overrides — colores azul oscuro con contraste WCAG AA ── */
 [data-theme="light"] .text-white          { color: #003764 !important; }
-[data-theme="light"] .text-white\/10      { color: rgba(0,55,100,0.10) !important; }
-[data-theme="light"] .text-white\/20      { color: rgba(0,55,100,0.20) !important; }
-[data-theme="light"] .text-white\/25      { color: rgba(0,55,100,0.25) !important; }
-[data-theme="light"] .text-white\/30      { color: rgba(0,55,100,0.30) !important; }
-[data-theme="light"] .text-white\/35      { color: rgba(0,55,100,0.35) !important; }
-[data-theme="light"] .text-white\/40      { color: rgba(0,55,100,0.40) !important; }
-[data-theme="light"] .text-white\/45      { color: rgba(0,55,100,0.45) !important; }
-[data-theme="light"] .text-white\/50      { color: rgba(0,55,100,0.50) !important; }
-[data-theme="light"] .text-white\/55      { color: rgba(0,55,100,0.55) !important; }
-[data-theme="light"] .text-white\/60      { color: rgba(0,55,100,0.60) !important; }
-[data-theme="light"] .text-white\/70      { color: rgba(0,55,100,0.70) !important; }
-[data-theme="light"] .text-white\/75      { color: rgba(0,55,100,0.75) !important; }
-[data-theme="light"] .text-white\/80      { color: rgba(0,55,100,0.80) !important; }
+[data-theme="light"] .text-white\/10      { color: #7ca5be !important; }
+[data-theme="light"] .text-white\/20      { color: #5a8faa !important; }
+[data-theme="light"] .text-white\/25      { color: #4d849f !important; }
+[data-theme="light"] .text-white\/30      { color: #4a7a9b !important; }
+[data-theme="light"] .text-white\/35      { color: #3e7090 !important; }
+[data-theme="light"] .text-white\/40      { color: #336685 !important; }
+[data-theme="light"] .text-white\/45      { color: #2e5f7c !important; }
+[data-theme="light"] .text-white\/50      { color: #2a5e88 !important; }
+[data-theme="light"] .text-white\/55      { color: #235678 !important; }
+[data-theme="light"] .text-white\/60      { color: #1e4f70 !important; }
+[data-theme="light"] .text-white\/70      { color: #164468 !important; }
+[data-theme="light"] .text-white\/75      { color: #103f62 !important; }
+[data-theme="light"] .text-white\/80      { color: #0b3a5c !important; }
 
 /* Cards: fondo oscuro → claro */
 [data-theme="light"] .bg-white\/5  { background: rgba(0,55,100,0.04) !important; }
 [data-theme="light"] .border-white\/5  { border-color: rgba(0,55,100,0.07) !important; }
 [data-theme="light"] .border-white\/8  { border-color: rgba(0,55,100,0.09) !important; }
+
+/* Excepción: componentes que siempre tienen fondo oscuro (fotos, panels) — restaurar blanco */
+[data-theme="light"] .force-dark .text-white   { color: #ffffff !important; }
+[data-theme="light"] .force-dark .text-white\/10 { color: rgba(255,255,255,0.10) !important; }
+[data-theme="light"] .force-dark .text-white\/20 { color: rgba(255,255,255,0.20) !important; }
+[data-theme="light"] .force-dark .text-white\/25 { color: rgba(255,255,255,0.25) !important; }
+[data-theme="light"] .force-dark .text-white\/30 { color: rgba(255,255,255,0.30) !important; }
+[data-theme="light"] .force-dark .text-white\/35 { color: rgba(255,255,255,0.35) !important; }
+[data-theme="light"] .force-dark .text-white\/40 { color: rgba(255,255,255,0.40) !important; }
+[data-theme="light"] .force-dark .text-white\/45 { color: rgba(255,255,255,0.45) !important; }
+[data-theme="light"] .force-dark .text-white\/50 { color: rgba(255,255,255,0.50) !important; }
+[data-theme="light"] .force-dark .text-white\/55 { color: rgba(255,255,255,0.55) !important; }
+[data-theme="light"] .force-dark .text-white\/60 { color: rgba(255,255,255,0.60) !important; }
+[data-theme="light"] .force-dark .text-white\/70 { color: rgba(255,255,255,0.70) !important; }
+[data-theme="light"] .force-dark .text-white\/75 { color: rgba(255,255,255,0.75) !important; }
+[data-theme="light"] .force-dark .text-white\/80 { color: rgba(255,255,255,0.80) !important; }
 
 @layer utilities {
   /* Gradient text — solo con colores corporativos */

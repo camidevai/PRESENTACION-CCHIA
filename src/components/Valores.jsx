@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
+import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const MAIN_WORDS = [
   { text: 'IA RESPONSABLE',   top: '8%',  left: '5%',   size: '2rem',   rotate: '-3deg', delay: 0.1, float: { amp: 10, dur: 3.8 } },
@@ -29,9 +30,11 @@ const SECONDARY_WORDS = [
 const TEAL_GRADIENT = 'linear-gradient(120deg, #008996, #00c9b1)'
 
 export default function Valores({ episode, goNext, goPrev, hasNext, hasPrev }) {
+  const { theme } = useTheme()
+  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <p className="text-white/40 text-base leading-relaxed mb-6">
+      <p className="text-base leading-relaxed mb-6" style={{ color: tk.textMuted }}>
         Cuatro principios guían cada decisión, cada alianza y cada iniciativa de CCHIA.
       </p>
 
