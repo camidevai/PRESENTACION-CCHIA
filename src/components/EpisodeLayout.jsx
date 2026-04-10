@@ -7,7 +7,26 @@ export default function EpisodeLayout({
   const text = dark ? 'white'   : '#003764'
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: bg }}>
+    <div className="min-h-screen flex flex-col" style={{ background: bg, position: 'relative' }}>
+      {/* Logo watermark */}
+      <img
+        src="/logo-cchia.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '55%',
+          maxWidth: '520px',
+          objectFit: 'contain',
+          opacity: 0.2,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 0,
+        }}
+      />
       {/* Episode header */}
       <div className="px-8 pt-8 pb-0">
         <div className="flex items-center gap-3 mb-5">

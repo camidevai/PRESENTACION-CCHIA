@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
 
 const COMO = [
-  { icon: '🔗', title: 'Conectamos', desc: 'Tejemos redes entre actores que antes operaban en silos: academia, industria, Estado, sociedad civil.' },
-  { icon: '📚', title: 'Capacitamos', desc: 'Generamos conocimiento accesible, democratizando la IA para profesionales y ciudadanos de todo Chile.' },
-  { icon: '⚙️', title: 'Colaboramos', desc: 'Identificamos brechas reales y construimos soluciones concretas con todos los actores del ecosistema.' },
-  { icon: '🌐', title: 'Proyectamos', desc: 'Posicionamos a Chile en el mapa global de la IA responsable a través de alianzas internacionales.' },
+  { img: '/Como lo hacemos/conectamos.png',  title: 'Conectamos', desc: 'Tejemos redes entre actores que antes operaban en silos: academia, industria, Estado, sociedad civil.' },
+  { img: '/Como lo hacemos/Capacitamos.png', title: 'Capacitamos', desc: 'Generamos conocimiento accesible, democratizando la IA para profesionales y ciudadanos de todo Chile.' },
+  { img: '/Como lo hacemos/colaboramos.png', title: 'Colaboramos', desc: 'Identificamos brechas reales y construimos soluciones concretas con todos los actores del ecosistema.' },
+  { img: '/Como lo hacemos/Proyectamos.png', title: 'Proyectamos', desc: 'Posicionamos a Chile en el mapa global de la IA responsable a través de alianzas internacionales.' },
 ]
 
 export default function ComoLoHacemos({ episode, goNext, goPrev, hasNext, hasPrev }) {
@@ -15,19 +15,27 @@ export default function ComoLoHacemos({ episode, goNext, goPrev, hasNext, hasPre
         CCHIA actúa como catalizador del ecosistema, operando en cuatro dimensiones complementarias.
       </p>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {COMO.map((item, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-6 rounded-2xl"
+            className="rounded-2xl overflow-hidden group"
             style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
           >
-            <span className="text-3xl mb-4 block">{item.icon}</span>
-            <h3 className="text-white font-black text-xl mb-2">{item.title}</h3>
-            <p className="text-white/45 text-sm leading-relaxed">{item.desc}</p>
+            <div className="overflow-hidden" style={{ aspectRatio: '1/1' }}>
+              <img
+                src={item.img}
+                alt={item.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="px-5 py-4">
+              <h3 className="text-white font-black text-base mb-1">{item.title}</h3>
+              <p className="text-white/45 text-sm leading-relaxed">{item.desc}</p>
+            </div>
           </motion.div>
         ))}
       </div>

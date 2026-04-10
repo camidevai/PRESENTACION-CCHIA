@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 // speaker viene como prop desde App.jsx (definido en la pantalla de selección)
 import { motion, AnimatePresence } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
@@ -16,7 +16,7 @@ const STORIES = {
       bgAngle: '135deg',
       bgFrom: '#1a0e08',
       bgTo: '#2a1a0a',
-      img: null, // agregar imagen aquí: '/historia-cami/01-no-era-tech.png'
+      video: '/Videos/Camila/Yo no era tecnologia.mp4',
     },
     {
       title: 'Tomé una decisión incómoda',
@@ -29,7 +29,7 @@ const STORIES = {
       bgAngle: '135deg',
       bgFrom: '#120a1a',
       bgTo: '#1e0e2e',
-      img: null, // agregar imagen aquí: '/historia-cami/02-decision-incomoda.png'
+      video: '/Videos/Camila/Tome una decision incomoda.mp4',
     },
     {
       title: 'Encontré algo que me obsesionó',
@@ -42,7 +42,7 @@ const STORIES = {
       bgAngle: '135deg',
       bgFrom: '#001e1a',
       bgTo: '#003030',
-      img: null, // agregar imagen aquí: '/historia-cami/03-obsesion.png'
+      video: '/Videos/Camila/Encontre algo que me obsesiono.mp4',
     },
     {
       title: 'Compartí y todo cambió',
@@ -55,7 +55,7 @@ const STORIES = {
       bgAngle: '135deg',
       bgFrom: '#1a0814',
       bgTo: '#2a0e20',
-      img: null, // agregar imagen aquí: '/historia-cami/04-redes.png'
+      video: '/Videos/Camila/Comparti y todo cambio.mp4',
     },
     {
       title: 'Construí algo más grande que yo',
@@ -68,7 +68,10 @@ const STORIES = {
       bgAngle: '135deg',
       bgFrom: '#001428',
       bgTo: '#002040',
-      img: null, // agregar imagen aquí: '/historia-cami/05-construi.png'
+      videos: [
+        '/Videos/Camila/Construi algo más grande que yo uno.mp4',
+        '/Videos/Camila/Construí algo más grande que yo dos.mp4',
+      ],
     },
   ],
   edison: [
@@ -130,6 +133,34 @@ const STORIES = {
   ],
 }
 
+function VideoThumbnail({ src, accentColor, isActive }) {
+  const videoRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (isActive) {
+      v.play().catch(() => {})
+    } else {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [isActive])
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-full h-full object-cover"
+      style={{ display: 'block' }}
+    />
+  )
+}
+
 function ComicPanel({ panel, index, isActive, onClick }) {
   return (
     <motion.div
@@ -143,86 +174,75 @@ function ComicPanel({ panel, index, isActive, onClick }) {
         border: isActive
           ? `2px solid ${panel.accentColor}`
           : '2px solid rgba(255,255,255,0.08)',
-        boxShadow: isActive ? `0 0 24px ${panel.accentColor}35` : 'none',
+        boxShadow: isActive ? `0 0 28px ${panel.accentColor}45` : 'none',
         transition: 'all 0.3s ease',
       }}
     >
-      {/* Panel art — imagen si existe, sino arte abstracto */}
+      {/* Video thumbnail */}
       <div
-        className="relative overflow-hidden flex items-center justify-center"
+        className="relative overflow-hidden"
         style={{
-          height: panel.img ? 'auto' : '128px',
+          aspectRatio: '1/1',
           background: `linear-gradient(${panel.bgAngle}, ${panel.bgFrom}, ${panel.bgTo})`,
         }}
       >
-        {panel.img ? (
+        {(panel.video || panel.videos) ? (
           <>
-            <img
-              src={panel.img}
-              alt={panel.title}
-              className="w-full h-auto object-cover"
-              style={{ maxHeight: '180px', objectPosition: 'center top' }}
-            />
-            {/* Gradiente sobre la imagen */}
+            <VideoThumbnail src={panel.videos?.[0] ?? panel.video} accentColor={panel.accentColor} isActive={isActive} />
+            {/* Gradiente inferior */}
             <div
               className="absolute inset-0"
-              style={{ background: `linear-gradient(to bottom, transparent 50%, ${panel.bgTo} 100%)` }}
+              style={{ background: `linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.7) 100%)` }}
             />
           </>
         ) : (
-          <>
-            {/* Arte decorativo placeholder */}
-            <div style={{
-              position: 'absolute', top: '18%', left: '14%',
-              width: '50px', height: '50px', borderRadius: '50%',
-              background: `${panel.accentColor}18`,
-              border: `2px solid ${panel.accentColor}28`,
-            }} />
-            <div style={{
-              position: 'absolute', bottom: '22%', right: '18%',
-              width: '36px', height: '36px', borderRadius: '8px',
-              background: `${panel.accentColor}12`, transform: 'rotate(20deg)',
-              border: `1px solid ${panel.accentColor}20`,
-            }} />
-            <span className="text-3xl relative z-10">{panel.emoji}</span>
-          </>
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-3xl">{panel.emoji}</span>
+          </div>
         )}
 
         {/* Caption */}
         <span
-          className="absolute top-2.5 left-3 text-[10px] font-black tracking-widest uppercase z-10"
-          style={{ color: panel.accentColor, textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
+          className="absolute top-2.5 left-2.5 text-[9px] font-black tracking-widest uppercase z-10 px-1.5 py-0.5 rounded"
+          style={{
+            color: panel.accentColor,
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(4px)',
+          }}
         >
           {panel.caption}
         </span>
+
+        {/* Play icon (solo cuando inactivo) */}
+        {!isActive && (
+          <div
+            className="absolute inset-0 flex items-center justify-center z-10 opacity-0 hover:opacity-100 transition-opacity duration-200"
+          >
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center"
+              style={{ background: `${panel.accentColor}cc`, backdropFilter: 'blur(4px)' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                <path d="M3 2l9 5-9 5V2z" />
+              </svg>
+            </div>
+          </div>
+        )}
+
         {/* Panel number */}
         <span
-          className="absolute bottom-2 right-3 text-[10px] font-black tabular-nums z-10"
-          style={{ color: 'rgba(255,255,255,0.25)' }}
+          className="absolute bottom-2 right-2 text-[10px] font-black tabular-nums z-10"
+          style={{ color: 'rgba(255,255,255,0.35)' }}
         >
           {String(index + 1).padStart(2, '0')}
         </span>
       </div>
 
-      {/* Título + dialog */}
-      <div className="p-3 flex-1" style={{ background: 'rgba(0,20,40,0.95)' }}>
-        {/* Título del panel */}
-        <p className="text-white font-black text-[11px] leading-tight mb-2">
+      {/* Título */}
+      <div className="px-2.5 py-2" style={{ background: 'rgba(0,10,20,0.97)' }}>
+        <p className="text-white font-black text-[10px] leading-tight text-center">
           {panel.title}
         </p>
-        <div
-          className="p-2.5 mb-2"
-          style={{
-            background: 'rgba(255,255,255,0.05)',
-            borderRadius: panel.dialogType === 'thought' ? '12px 12px 12px 3px' : '12px 12px 3px 12px',
-            border: `1px solid ${panel.accentColor}25`,
-          }}
-        >
-          <p className="text-white/75 text-[11px] leading-relaxed">
-            {panel.dialogType === 'thought' ? '💭 ' : '💬 '}
-            <em>"{panel.dialog}"</em>
-          </p>
-        </div>
       </div>
 
       {/* Active bar */}
@@ -283,24 +303,62 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.25 }}
-          className="p-6 rounded-2xl flex items-start gap-4"
-          style={{ background: `${active.accentColor}10`, border: `1px solid ${active.accentColor}25` }}
+          className="rounded-2xl overflow-hidden"
+          style={{ border: `1px solid ${active.accentColor}30` }}
         >
-          <span className="text-4xl flex-shrink-0">{active.emoji}</span>
-          <div>
-            <p
-              className="text-[10px] font-black tracking-[0.25em] uppercase mb-1"
-              style={{ color: active.accentColor }}
+          <div className="flex flex-col sm:flex-row">
+            {/* Video(s) con controles */}
+            {active.videos ? (
+              <div className="flex flex-shrink-0 gap-1" style={{ background: '#000' }}>
+                {active.videos.map((src, vi) => (
+                  <div key={vi} style={{ width: '180px', aspectRatio: '1/1', flexShrink: 0 }}>
+                    <video
+                      key={`detail-${speaker}-${panelIdx}-${vi}`}
+                      src={src}
+                      controls
+                      playsInline
+                      className="w-full h-full object-cover"
+                      style={{ display: 'block' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : active.video ? (
+              <div
+                className="flex-shrink-0"
+                style={{ width: '220px', aspectRatio: '1/1', background: '#000' }}
+              >
+                <video
+                  key={`detail-${speaker}-${panelIdx}`}
+                  src={active.video}
+                  controls
+                  playsInline
+                  className="w-full h-full object-cover"
+                  style={{ display: 'block' }}
+                />
+              </div>
+            ) : null}
+
+            {/* Info */}
+            <div
+              className="p-5 flex-1"
+              style={{ background: `${active.accentColor}0d` }}
             >
-              {active.caption}
-            </p>
-            <h3 className="text-white text-xl font-black leading-tight mb-3">
-              {active.title}
-            </h3>
-            <blockquote className="text-white/80 text-base font-light leading-relaxed mb-3 italic">
-              "{active.dialog}"
-            </blockquote>
-            <p className="text-white/45 text-sm leading-relaxed">{active.narrative}</p>
+              <p
+                className="text-[10px] font-black tracking-[0.25em] uppercase mb-1"
+                style={{ color: active.accentColor }}
+              >
+                {active.caption}
+              </p>
+              <h3 className="text-white text-xl font-black leading-tight mb-3">
+                {active.title}
+              </h3>
+              <blockquote className="text-white/80 text-base font-light leading-relaxed mb-3 italic">
+                {active.dialogType === 'thought' ? '💭 ' : '💬 '}
+                "{active.dialog}"
+              </blockquote>
+              <p className="text-white/45 text-sm leading-relaxed">{active.narrative}</p>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>

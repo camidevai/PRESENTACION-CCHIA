@@ -4,8 +4,8 @@ import { definicion } from '../data/content'
 
 export default function Definicion({ episode, goNext, goPrev, hasNext, hasPrev }) {
   return (
-    <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev} dark={false}>
-      <p className="text-[#003764]/60 text-base leading-relaxed max-w-2xl mb-10">
+    <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
+      <p className="text-white/40 text-base leading-relaxed max-w-2xl mb-10">
         CCHIA es una organización sin fines de lucro que articula academia, industria, gobierno y sociedad civil en torno a la inteligencia artificial responsable.
       </p>
 
@@ -16,8 +16,14 @@ export default function Definicion({ episode, goNext, goPrev, hasNext, hasPrev }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="rounded-2xl overflow-hidden border border-[#003764]/08 hover:border-[#008996]/40 transition-all duration-300 group"
-            style={{ background: 'white', boxShadow: '0 2px 20px rgba(0,55,100,0.06)' }}
+            className="rounded-2xl overflow-hidden group transition-all duration-300"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 2px 20px rgba(0,0,0,0.2)',
+            }}
+            onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(0,137,150,0.4)'}
+            onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'}
           >
             <div className="overflow-hidden">
               <img
@@ -26,7 +32,8 @@ export default function Definicion({ episode, goNext, goPrev, hasNext, hasPrev }
               />
             </div>
             <div className="px-5 py-4">
-              <p className="text-[#003764]/60 text-sm leading-relaxed">{item.desc}</p>
+              <h3 className="text-white font-bold text-sm mb-1.5">{item.alt}</h3>
+              <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
             </div>
           </motion.div>
         ))}

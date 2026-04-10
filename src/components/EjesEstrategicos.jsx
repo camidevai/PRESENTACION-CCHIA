@@ -4,81 +4,131 @@ import EpisodeLayout from './EpisodeLayout'
 import { ejes } from '../data/content'
 
 const IMAGES = {
-  conexion:     '/Ejes estrategicos/3b095854-e4b8-4881-95a5-81c405886057.png',
+  default:      '/Ejes estrategicos/Ejes estrategicos.png',
+  conexion:     '/Ejes estrategicos/Conexión y Networking.png',
   capacitacion: '/Ejes estrategicos/Capacitación y Sensibilización.png',
   colaboracion: '/Ejes estrategicos/Colaboración Digital.png',
   alianzas:     '/Ejes estrategicos/Alianzas Globales.png',
 }
 
 export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, hasPrev }) {
-  const [active, setActive] = useState(null)
+  const [active, setActive] = useState('conexion')
+
+  const currentImg = IMAGES[active] ?? IMAGES.default
 
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <p className="text-white/40 text-base leading-relaxed max-w-2xl mb-10">
-        Cuatro ejes articulan toda la acción de CCHIA. Haz click en cada uno para explorar sus iniciativas.
-      </p>
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start w-full">
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        {ejes.map((eje, i) => {
-          const img = IMAGES[eje.id]
-          const isActive = active === eje.id
-          return (
-            <motion.div
-              key={eje.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => setActive(isActive ? null : eje.id)}
-              className="rounded-2xl overflow-hidden cursor-pointer transition-all duration-300"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: isActive ? '1px solid rgba(0,137,150,0.5)' : '1px solid rgba(255,255,255,0.08)',
-                boxShadow: isActive ? '0 0 24px rgba(0,137,150,0.12)' : 'none',
-              }}
-            >
-              {img && (
-                <div className="w-full overflow-hidden">
-                  <img src={img} alt={eje.title} className="w-full h-auto object-cover" />
-                </div>
-              )}
-              <div className="p-5">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-white font-black text-lg leading-tight">{eje.title}</h3>
-                  <motion.span
-                    animate={{ rotate: isActive ? 45 : 0 }}
-                    className="text-[#008996] text-xl font-light flex-shrink-0 ml-3"
-                  >+</motion.span>
-                </div>
-                <p className="text-white/45 text-sm leading-relaxed">{eje.description}</p>
+        {/* ── Columna izquierda: ejes ── */}
+        <div className="flex-1 min-w-0">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-white/40 text-base leading-relaxed max-w-sm mb-8"
+          >
+            Cuatro ejes articulan toda la acción de CCHIA. Haz click en cada uno para explorar sus iniciativas.
+          </motion.p>
 
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="overflow-hidden mt-4 pt-4"
-                      style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
-                    >
-                      <div className="space-y-3">
-                        {eje.subnodes.map((node, j) => (
-                          <div key={j} className="flex gap-3 items-start">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#008996] mt-1.5 flex-shrink-0" />
-                            <div>
-                              <p className="text-white font-semibold text-sm">{node.title}</p>
-                              <p className="text-white/35 text-xs leading-relaxed mt-0.5">{node.desc}</p>
-                            </div>
+          <div className="flex flex-col gap-3">
+            {ejes.map((eje, i) => {
+              const isActive = active === eje.id
+              return (
+                <motion.div
+                  key={eje.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  onClick={() => setActive(isActive ? null : eje.id)}
+                  className="rounded-xl overflow-hidden cursor-pointer transition-all duration-300"
+                  style={{
+                    background: isActive ? 'rgba(0,137,150,0.08)' : 'rgba(255,255,255,0.04)',
+                    border: isActive ? '1px solid rgba(0,137,150,0.5)' : '1px solid rgba(255,255,255,0.07)',
+                    boxShadow: isActive ? '0 0 20px rgba(0,137,150,0.1)' : 'none',
+                  }}
+                >
+                  <div className="px-5 py-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-white font-black text-base leading-tight">{eje.title}</h3>
+                      <motion.span
+                        animate={{ rotate: isActive ? 45 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-[#008996] text-xl font-light flex-shrink-0 ml-3"
+                      >+</motion.span>
+                    </div>
+                    {!isActive && (
+                      <p className="text-white/35 text-xs leading-relaxed mt-1">{eje.description}</p>
+                    )}
+
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden mt-3 pt-3"
+                          style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+                        >
+                          <p className="text-white/50 text-sm leading-relaxed mb-3">{eje.description}</p>
+                          <div className="space-y-2">
+                            {eje.subnodes.map((node, j) => (
+                              <div key={j} className="flex gap-3 items-start">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#008996] mt-1.5 flex-shrink-0" />
+                                <div>
+                                  <p className="text-white font-semibold text-sm">{node.title}</p>
+                                  <p className="text-white/35 text-xs leading-relaxed mt-0.5">{node.desc}</p>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          )
-        })}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* ── Columna derecha: imagen dinámica 1:1 ── */}
+        <div
+          className="flex-shrink-0 w-full lg:w-1/2"
+          style={{ aspectRatio: '1/1', position: 'relative', borderRadius: '20px', overflow: 'hidden' }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImg}
+              src={currentImg}
+              alt="Eje estratégico"
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                display: 'block',
+                position: 'absolute',
+                inset: 0,
+              }}
+            />
+          </AnimatePresence>
+
+          {/* Gradientes de fusión */}
+          <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: 'linear-gradient(to right, rgba(0,16,31,0.4) 0%, transparent 40%)',
+          }} />
+          <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: 'linear-gradient(to top, rgba(0,16,31,0.3) 0%, transparent 40%)',
+          }} />
+        </div>
+
       </div>
     </EpisodeLayout>
   )
