@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { QRCodeSVG } from 'qrcode.react'
 import EpisodeLayout from './EpisodeLayout'
+import EpisodeTitle from './EpisodeTitle'
 import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
 
 const BENEFICIOS = [
@@ -15,7 +16,11 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
   const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center w-full h-full">
+      <div className="flex flex-col gap-4 w-full min-h-full">
+
+        <EpisodeTitle lead="Tú también" highlight="puedes ser parte." />
+
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center w-full flex-1 min-h-0">
 
         {/* ── Izquierda: imagen ── */}
         <motion.div
@@ -114,6 +119,7 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
           </div>
         </motion.div>
 
+        </div>
       </div>
     </EpisodeLayout>
   )

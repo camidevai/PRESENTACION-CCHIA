@@ -1,39 +1,26 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
-import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
+import EpisodeTitle from './EpisodeTitle'
 
 const IMAGES = [
   '/Fotos/General/Sin fines de lucro Multi-actor A Impacto real-01.png',
   '/Fotos/General/Sin fines de lucro Multi-actor A Impacto real-02.png',
 ]
 
+const TITLES = [
+  { lead: 'Estamos ante un', highlight: 'cambio de paradigma.' },
+  { lead: '', highlight: 'Conectar, ordenar y transformar.' },
+]
+
 export default function LaCCHIA({ episode, goNext, goPrev, hasNext, hasPrev }) {
-  const { theme } = useTheme()
-  const tk = TOKENS[theme]
   const [imgIdx, setImgIdx] = useState(0)
 
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <div className="flex flex-col items-center justify-center gap-3 w-full min-h-full">
+      <div className="flex flex-col items-center justify-center gap-4 w-full min-h-full">
 
-        {/* Título centrado — una línea */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-center"
-        >
-          <p className="text-xl sm:text-2xl font-black leading-tight">
-            <span style={{ color: tk.text }}>Estamos ante un </span>
-            <span style={{
-              background: 'linear-gradient(120deg, #008996, #00c9b1)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>cambio de paradigma.</span>
-          </p>
-        </motion.div>
+        <EpisodeTitle lead={TITLES[imgIdx].lead} highlight={TITLES[imgIdx].highlight} />
 
         <motion.div
           initial={{ opacity: 0 }}

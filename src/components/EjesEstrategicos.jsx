@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion'
 import EpisodeLayout from './EpisodeLayout'
-import { useTheme, TOKENS } from '../context/ThemeContext.jsx'
+import EpisodeTitle from './EpisodeTitle'
 
 export default function EjesEstrategicos({ episode, goNext, goPrev, hasNext, hasPrev }) {
-  const { theme } = useTheme()
-  const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <div className="flex flex-col items-center justify-center gap-3 w-full min-h-full">
+      <div className="flex flex-col items-center justify-center gap-4 w-full min-h-full">
+
+        <EpisodeTitle lead="Conectamos personas, alineamos capacidades" highlight="y transformamos conversación en acción." />
 
         <motion.div
           initial={{ opacity: 0 }}
