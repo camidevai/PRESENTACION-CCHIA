@@ -17,8 +17,8 @@ export const useTheme = () => useContext(ThemeContext)
 // Tokens por tema
 export const TOKENS = {
   dark: {
-    bg:          '#00101f',
-    bgSidebar:   'rgba(0,12,26,0.99)',
+    bg:          'rgb(1,3,27)',
+    bgSidebar:   'rgb(1,3,27)',
     bgCard:      'rgba(255,255,255,0.04)',
     border:      'rgba(255,255,255,0.06)',
     borderCard:  'rgba(255,255,255,0.08)',
