@@ -9,7 +9,6 @@ import Definicion from './components/Definicion'
 import Vision from './components/Vision'
 import ComoLoHacemos from './components/ComoLoHacemos'
 import EjesEstrategicos from './components/EjesEstrategicos'
-import Valores from './components/Valores'
 import Ecosistema from './components/Ecosistema'
 
 export const SECTIONS = [
@@ -19,8 +18,7 @@ export const SECTIONS = [
   { id: 'vision',       label: 'Visión Estratégica',       ep: '03' },
   { id: 'como',         label: 'Cómo lo hacemos',          ep: '04' },
   { id: 'ejes',         label: 'Ejes Estratégicos',        ep: '05' },
-  { id: 'valores',      label: 'Lo que nos define',        ep: '06' },
-  { id: 'ecosistema',   label: 'Únete al ecosistema',      ep: '07' },
+  { id: 'ecosistema',   label: 'Únete al ecosistema',      ep: '06' },
 ]
 
 const MAP = {
@@ -30,7 +28,6 @@ const MAP = {
   'vision':      Vision,
   'como':        ComoLoHacemos,
   'ejes':        EjesEstrategicos,
-  'valores':     Valores,
   'ecosistema':  Ecosistema,
 }
 

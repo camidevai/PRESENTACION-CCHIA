@@ -9,7 +9,7 @@ export default function EpisodeLayout({
 
   return (
     <div
-      className="min-h-screen flex flex-col"
+      className="h-screen flex flex-col"
       style={{ background: tk.bg, position: 'relative', transition: 'background 0.3s' }}
     >
       {/* Logo watermark */}
@@ -33,8 +33,8 @@ export default function EpisodeLayout({
       />
 
       {/* Episode header */}
-      <div className="px-8 pt-8 pb-0" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="flex items-center gap-3 mb-5">
+      <div className="px-4 sm:px-8 pt-4 pb-0 flex-shrink-0" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="flex items-center gap-3 mb-2">
           <span
             className="px-3 py-1 rounded-full text-[10px] font-black tracking-[0.25em] uppercase"
             style={{ background: 'rgba(0,137,150,0.15)', color: '#008996', border: '1px solid rgba(0,137,150,0.3)' }}
@@ -49,20 +49,20 @@ export default function EpisodeLayout({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl md:text-5xl font-black tracking-tight leading-none mb-1"
+          className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight leading-none mb-1"
           style={{ color: tk.text }}
         >
           {episode.label}
         </motion.h1>
-        <div className="mt-4 mb-0 h-px w-16" style={{ background: '#008996' }} />
+        <div className="mt-2 mb-0 h-px w-16" style={{ background: '#008996' }} />
       </div>
 
       {/* Contenido */}
-      <div className="flex-1 px-8 py-8" style={{ position: 'relative', zIndex: 1 }}>{children}</div>
+      <div className="flex-1 min-h-0 px-4 sm:px-8 py-3 sm:py-4 overflow-y-auto" style={{ position: 'relative', zIndex: 1 }}>{children}</div>
 
       {/* Navegación */}
       <div
-        className="px-8 pb-8 pt-5 flex justify-between items-center"
+        className="px-4 sm:px-8 pb-4 pt-3 flex justify-between items-center flex-shrink-0"
         style={{ borderTop: `1px solid ${tk.divider}`, position: 'relative', zIndex: 1 }}
       >
         <button

@@ -12,7 +12,7 @@ export const speakers = {
     name: 'Edison Vásquez',
     role: 'Presidente · Estrategia & Alianzas',
     quote: 'No estamos ante un cambio tecnológico, sino ante un cambio de paradigma. Chile tiene la oportunidad de convertirse en el referente latinoamericano de inteligencia artificial responsable.',
-    extended: 'La Cámara existe para articular al ecosistema: conectar la academia con la industria, el sector público con el privado, lo local con lo global. Somos el sistema operativo del ecosistema de IA en Chile, y esa responsabilidad nos exige actuar con visión estratégica y ética inquebrantable.',
+    extended: 'La Cámara existe para articular al ecosistema: conectar la academia con la industria, el sector público con el privado, lo local con lo global. Somos un punto de encuentro para que las personas, las ideas y las oportunidades en torno a la IA puedan conectarse y crecer juntas., y esa responsabilidad nos exige actuar con visión estratégica y ética inquebrantable.',
     color: 'cchia-blue',
   },
 }

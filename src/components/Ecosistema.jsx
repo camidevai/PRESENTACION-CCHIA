@@ -15,64 +15,20 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
   const tk = TOKENS[theme]
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center w-full">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center w-full min-h-full">
 
-        {/* ── Izquierda: texto ── */}
+        {/* ── Izquierda: imagen ── */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex-1 min-w-0"
+          className="flex-1 min-w-0 flex items-center"
         >
-          {/* Tagline */}
-          <p
-            className="text-4xl sm:text-5xl font-black leading-tight mb-3"
-            style={{
-              background: 'linear-gradient(120deg, #008996, #00c9b1)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            Forma parte<br />del ecosistema.
-          </p>
-          <p className="text-base leading-relaxed mb-10 max-w-sm" style={{ color: tk.textFaint }}>
-            CCHIA conecta a quienes construyen el futuro de la IA en Chile. Profesionales, empresas, academia y gobierno — hacia un mismo norte.
-          </p>
-
-          {/* Beneficios */}
-          <div className="flex flex-col gap-3 mb-10">
-            {BENEFICIOS.map((b, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.25 + i * 0.08 }}
-                className="flex items-center gap-4 py-3 px-4 rounded-xl"
-                style={{
-                  background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : tk.bgCard,
-                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : `1px solid ${tk.borderCard}`,
-                  borderLeft: '3px solid #008996',
-                }}
-              >
-                <span className="text-[#008996] font-black text-sm tabular-nums w-6 flex-shrink-0">{b.num}</span>
-                <p className="text-sm font-medium" style={{ color: tk.text }}>{b.label}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* URL */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="text-sm"
-            style={{ color: tk.textFaint }}
-          >
-            Visita{' '}
-            <span style={{ color: '#00c9b1', fontWeight: 700, fontSize: '1rem' }}>cchia.cl</span>
-            {' '}o escanea el código QR
-          </motion.p>
+          <img
+            src="/forma parte/forma parte.png"
+            alt="Forma parte del ecosistema"
+            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '16px' }}
+          />
         </motion.div>
 
         {/* ── Derecha: QR card ── */}
@@ -87,7 +43,7 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
               background: 'linear-gradient(135deg, #000d1a 0%, #001824 100%)',
               border: '1px solid rgba(0,137,150,0.3)',
               borderRadius: '28px',
-              padding: '40px 36px',
+              padding: 'clamp(20px, 4vw, 40px) clamp(16px, 3vw, 36px)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -115,9 +71,7 @@ export default function Ecosistema({ episode, goNext, goPrev, hasNext, hasPrev }
                 padding: '20px',
                 position: 'relative',
                 zIndex: 1,
-                width: '45vw',
-                maxWidth: '420px',
-                minWidth: '200px',
+                width: 'clamp(160px, 35vw, 380px)',
               }}
             >
               <QRCodeSVG

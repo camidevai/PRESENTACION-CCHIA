@@ -13,7 +13,6 @@ const STORIES = {
       accentColor: '#e07b52',
       dialog: 'Mi primer trabajo fue ser promotora afuera de una clínica dental.',
       dialogType: 'thought',
-      narrative: 'Camila no nació en el mundo tech. Antes de la IA, antes del código, antes de todo — estaba parada en la vereda repartiendo folletos.',
       bgAngle: '135deg',
       bgFrom: '#1a0e08',
       bgTo: '#2a1a0a',
@@ -26,7 +25,6 @@ const STORIES = {
       accentColor: '#c084fc',
       dialog: '¿Ingeniería en informática? No sé si puedo... pero lo voy a intentar.',
       dialogType: 'thought',
-      narrative: 'Estudió Ingeniería en Informática con mención en Ciberseguridad. Fue incómodo, fue difícil, pero fue la decisión que lo cambió todo.',
       bgAngle: '135deg',
       bgFrom: '#120a1a',
       bgTo: '#1e0e2e',
@@ -39,7 +37,6 @@ const STORIES = {
       accentColor: '#00c9b1',
       dialog: 'La inteligencia artificial generativa... esto lo cambia TODO.',
       dialogType: 'speech',
-      narrative: 'Tiene TDAH y cuando algo le llama la atención, entra en hiperfoco total. La IA generativa fue ese algo. Hizo un posgrado, se certificó, no paró.',
       bgAngle: '135deg',
       bgFrom: '#001e1a',
       bgTo: '#003030',
@@ -52,7 +49,6 @@ const STORIES = {
       accentColor: '#f472b6',
       dialog: '¡Prech! Si yo pude aprender esto, tú también puedes.',
       dialogType: 'speech',
-      narrative: 'Empezó a subir videos todos los días. Hoy tiene más de 470.000 seguidores. Es "la chica que dice prech" — y democratiza la IA un video a la vez.',
       bgAngle: '135deg',
       bgFrom: '#1a0814',
       bgTo: '#2a0e20',
@@ -65,7 +61,6 @@ const STORIES = {
       accentColor: '#008996',
       dialog: 'Fundé mi empresa, me uní a la CCHIA. Esto ya no es solo mío.',
       dialogType: 'speech',
-      narrative: 'CEO y fundadora de su empresa de software. Socia de la Cámara Chilena de IA. Certificada por Chile Valora. Lo que empezó en una clínica dental llegó acá.',
       bgAngle: '135deg',
       bgFrom: '#001428',
       bgTo: '#002040',
@@ -277,13 +272,11 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
 
   return (
     <EpisodeLayout episode={episode} goNext={goNext} goPrev={goPrev} hasNext={hasNext} hasPrev={hasPrev}>
-      <p className="text-base leading-relaxed max-w-2xl mb-8" style={{ color: tk.textFaint }}>
-        Antes de hablar de la Cámara, hay una historia que la hizo posible.
-      </p>
+      
 
       {/* Speaker badge */}
       <div
-        className="inline-flex items-center gap-3 px-4 py-3 rounded-xl mb-8"
+        className="inline-flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-3 rounded-xl mb-4 sm:mb-6"
         style={{ background: `${sp.color}12`, border: `1px solid ${sp.color}30` }}
       >
         <img
@@ -298,7 +291,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
       </div>
 
       {/* Comic grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-3 sm:mb-5">
         {story.map((panel, i) => (
           <ComicPanel
             key={`${speaker}-${i}`}
@@ -329,7 +322,6 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
           <blockquote className="text-sm font-light leading-relaxed mb-2 italic" style={{ color: tk.textMuted }}>
             {active.dialogType === 'thought' ? '💭 ' : '💬 '}"{active.dialog}"
           </blockquote>
-          <p className="text-sm leading-relaxed" style={{ color: tk.textFaint }}>{active.narrative}</p>
           {hasVideo && (
             <button
               onClick={() => setModalOpen(true)}
@@ -370,7 +362,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
                 borderRadius: '20px',
                 overflow: 'hidden',
                 width: '100%',
-                maxWidth: story[panelIdx].videos ? '700px' : '480px',
+                maxWidth: story[panelIdx].videos ? '900px' : '600px',
                 border: `1px solid ${story[panelIdx].accentColor}40`,
                 boxShadow: `0 0 60px ${story[panelIdx].accentColor}25`,
                 position: 'relative',
@@ -428,7 +420,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
                   {story[panelIdx].videos ? (
                     <div className="flex gap-1" style={{ padding: '8px' }}>
                       {story[panelIdx].videos.map((src, vi) => (
-                        <div key={vi} style={{ flex: 1, aspectRatio: '1/1' }}>
+                        <div key={vi} style={{ flex: 1, aspectRatio: '9/16' }}>
                           <video
                             src={src} controls playsInline muted autoPlay
                             className="w-full h-full object-cover"
@@ -438,7 +430,7 @@ export default function MiHistoria({ episode, goNext, goPrev, hasNext, hasPrev, 
                       ))}
                     </div>
                   ) : story[panelIdx].video ? (
-                    <div style={{ aspectRatio: '1/1', width: '100%' }}>
+                    <div style={{ aspectRatio: '9/16', width: '100%' }}>
                       <video
                         src={story[panelIdx].video} controls playsInline muted autoPlay
                         className="w-full h-full object-cover"
